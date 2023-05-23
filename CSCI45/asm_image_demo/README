@@ -1,0 +1,19 @@
+This folder has some example code for image filters in assembly
+
+CImg puts the data in a 3D array, the first plane a 2D array of all the red
+values, ranging from top left to bottom right, then the second plane all the
+blue data in the same layout, then the green data in the same format.
+
+greyscale.s holds code that will loop over an image from the top left to the
+bottom right. It will load the red, blue, and green values for that point
+(look at how the algebra is done!), average them together, and then save the
+results into the red, blue, and green values for that point. Pay close
+attention to how the averaging is done with a DIV instruction in ARM32 - we do
+have right shift, which divides by powers of 2, so we approximate it.
+
+neon_darken.s holds code that will loop over the image at every point and for
+each color plane (the loop is different since the greyscale image loads the
+R,G,B values for each point, but this one just loops over the whole 3D array)
+and will right shift the values by 1 bit, which is the same as division by 2.
+This darkens the image by 50%. It uses NEON, which allows processing multiple
+bytes of data at the same time. 
