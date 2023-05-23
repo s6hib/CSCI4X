@@ -1,0 +1,37 @@
+==============================================================
+ ____ _____  _ __   __   ___  _   _   _____ _   _ _____ 
+/ ___|_   _|/ \\ \ / /  / _ \| \ | | |_   _| | | | ____|
+\___ \ | | / _ \\ V /  | | | |  \| |   | | | |_| |  _|  
+ ___) || |/ ___ \| |   | |_| | |\  |   | | |  _  | |___ 
+|____/ |_/_/   \_\_|    \___/|_| \_|   |_| |_| |_|_____|
+                                                        
+  ____    _    ____ _   _ _____    ____ ____  ___ _   _ ____  
+ / ___|  / \  / ___| | | | ____|  / ___|  _ \|_ _| \ | |  _ \ 
+| |     / _ \| |   | |_| |  _|   | |  _| |_) || ||  \| | | | |
+| |___ / ___ \ |___|  _  | |___  | |_| |  _ < | || |\  | |_| |
+ \____/_/   \_\____|_| |_|_____|  \____|_| \_\___|_| \_|____/ 
+                                                              
+==============================================================
+
+That's not very cache money of you -Godzilla
+
+Purpose: To learn about the cache system and how to benchmark your code
+to see if code you *think* will be faster actually *is* faster.
+
+Read the textbook on cachegrind here: https://diveintosystems.org/book/C11-MemHierarchy/cachegrind.html#_cache_analysis_and_valgrind
+
+Important command: valgrind --tool=cachegrind ./a.out
+Important command #2: cg_annotate <the name of the file just made by Valgrind>
+
+Answer these questions in a 1 or 2 page document:
+1) How much L1 and L2 cache does the BCM2711 have? Link to an official
+resource where this information can be found.
+2) How much L1, L2, and L3 does the AMD 7950x3d have?
+3) What is the A) running time and B) D1 cache miss rate for each of the options
+listed in main.cc (there's like 15 or 16 options). Size = 100M.
+The program itself prints out the running time, and you need to run cachegrind to get the cache miss rate.
+For example look at this line:
+==3935== D1  miss rate:        0.6% (      0.6%     +       0.7%  )
+
+The miss rate is 0.6%.
+
