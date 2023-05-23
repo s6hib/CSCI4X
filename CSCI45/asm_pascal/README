@@ -1,0 +1,152 @@
+============================================================================
+ ____      _    ____   ____    _    _       ____   ___  _____ ____  
+|  _ \    / \  / ___| / ___|  / \  | |     |  _ \ / _ \| ____/ ___| 
+| |_) |  / _ \ \___ \| |     / _ \ | |     | | | | | | |  _| \___ \ 
+|  _ <  / ___ \ ___) | |___ / ___ \| |___  | |_| | |_| | |___ ___) |
+|_| \_\/_/   \_\____/ \____/_/   \_\_____| |____/ \___/|_____|____/ 
+                                                                    
+ _   _  ___ _____   ____  ____  _____    _    __  __    ___  _____ 
+| \ | |/ _ \_   _| |  _ \|  _ \| ____|  / \  |  \/  |  / _ \|  ___|
+|  \| | | | || |   | | | | |_) |  _|   / _ \ | |\/| | | | | | |_   
+| |\  | |_| || |   | |_| |  _ <| |___ / ___ \| |  | | | |_| |  _|  
+|_| \_|\___/ |_|   |____/|_| \_\_____/_/   \_\_|  |_|  \___/|_|    
+                                                                   
+ ____  _        _    ___ ____  _____   ____   _    ____   ____    _    _     
+| __ )| |      / \  |_ _/ ___|| ____| |  _ \ / \  / ___| / ___|  / \  | |    
+|  _ \| |     / _ \  | |\___ \|  _|   | |_) / _ \ \___ \| |     / _ \ | |    
+| |_) | |___ / ___ \ | | ___) | |___  |  __/ ___ \ ___) | |___ / ___ \| |___ 
+|____/|_____/_/   \_\___|____/|_____| |_| /_/   \_\____/ \____/_/   \_\_____|
+                                                                             
+============================================================================
+
+Concept:
+For this assignment you will implement the Pascal's Triangle algorithm
+The algorithm is fairly simple, look it up if you don't know it. It's
+basically repeated addition, but it is actually doing an iterative solution to
+solve (N choose K) in combinatorics (if you've taken CSCI 26, if not, don't
+worry about it - it's adding two numbers, that's it). It's also used in a lot
+of other things, like computing the binomial coefficients, the Fibonacci
+sequence, and a lot of other stuff, too. We're using it for... art.
+
+Learning Objective:
+You will learn how to do array/memory access in ARM32 assembly.
+
+Instructions:
+You're given a fully functional C++ implementation, with all the functions
+other than main located in an extern "C" {} block, so that your assembly code
+can call them without any headaches. Your job is to rewrite each of the
+sections into ARM32 assembly. Each section you rewrite is one letter grade.
+
+You will submit on Canvas which sections you have successfully rewritten into
+assembly, as well as screenshots of your code working.
+
+Extra Credit #1:
+Implement your own color palatte different from the one I use, and use a
+different modulus level other than 10 (maybe do primes or something, I dunno).
+Screenshot and submit on Canvas for a full letter grade added.
+
+Extra Credit #2:
+Instead of visualizing the colors in the terminal, use a ColorGrid from
+BRIDGES to visualize it on the BRIDGES website.
+Register here:
+https://bridgesuncc.github.io/
+Tutorial on using ColorGrid to visualize 2D arrays in color here:
+https://bridgesuncc.github.io/tutorials/ColorGrid.html
+Submit a link to your BRIDGES visualization for this letter grade in Extra
+Credit.
+
+Building the project:
+You must set up a Makefile that would build your project combining your main.cc
+and your own .s assembly file(s). If you don't know how to make a Makefile,
+you can look at previous projects and adapt from them.
+
+Advice:
+Pick off the low-hanging fruit. Any function you think you can do in assembly,
+rewrite it, leaving the C++ version behind for now, and swap out the C++ code
+with your code, and test it thoroughly. Once you're happy with it, swap out
+another little bit of code, and work your way up to the big ones.
+
+I arranged the sections in what I think are increasing complexity, and the
+last one might be annoying enough you might just want to do art rather than
+rewrite it in assembly to get the A, but it's up to you.
+
+One of the functions takes 5 parameters (ugh) which was not part of the plan,
+but it was unavoidable. In order to get the 5th parameter, you do an LDR from
+the stack pointer like this: LDR R8, [sp]
+5th (and 6th, 7th, etc.) functions parameters are passed on the stack like
+that
+
+Background:
+I did a summer school program for nerds when I was in middle school, and my
+very favorite activity there was literally this homework assignment, but on
+paper.  We did Pascal's Triangle, and then colored each diamond on the triangle
+based on what numbers the number was divisible by, and made some really cool looking
+artwork. I kept my art from that (which looked like a snowflake) for years.
+
+Input Tester:
+There is an input tester for this, but it's just to make sure you didn't screw up anything.
+You need to submit on Canvas so I know which sections you successfully swapped out - it will not be autograded.
+Note that the line that tells you your screen size is ignored by the autograder
+Note that the output is only the last digit of the number so that the formatting isn't screwed up
+
+Sample Run #1:
+Welcome to ASM Pascal! Screen size: 32 rows and 118 cols
+How many rows do you want?
+10 20 0
+How many cols do you want?
+Do you want 0) Text Output 1) Color Output?
+          1
+         1 1
+        1 2 1
+       1 3 3 1
+      1 4 6 4 1
+     1 5 0 0 5 1
+    1 6 5 0 5 6 1
+   1 7 1 5 5 1 7 1
+  1 8 8 6 0 6 8 8 1
+ 1 9 6 4 6 6 4 6 9 1
+
+Sample Run #2:
+Welcome to ASM Pascal! Screen size: 32 rows and 118 cols
+How many rows do you want?
+30 30 0
+How many cols do you want?
+Do you want 0) Text Output 1) Color Output?
+               1
+              1 1
+             1 2 1
+            1 3 3 1
+           1 4 6 4 1
+          1 5 0 0 5 1
+         1 6 5 0 5 6 1
+        1 7 1 5 5 1 7 1
+       1 8 8 6 0 6 8 8 1
+      1 9 6 4 6 6 4 6 9 1
+     1 0 5 0 0 2 0 0 5 0 1
+    1 1 5 5 0 2 2 0 5 5 1 1
+   1 2 6 0 5 2 4 2 5 0 6 2 1
+  1 3 8 6 5 7 6 6 7 5 6 8 3 1
+ 1 4 1 4 1 2 3 2 3 2 1 4 1 4 1
+1 5 5 5 5 3 5 5 5 5 3 5 5 5 5
+ 6 0 0 0 8 8 0 0 0 8 8 0 0 0 5
+6 6 0 0 8 6 8 0 0 8 6 8 0 0 5
+ 2 6 0 8 4 4 8 0 8 4 4 8 0 5 5
+2 8 6 8 2 8 2 8 8 2 8 2 8 5 0
+ 0 4 4 0 0 0 0 6 0 0 0 0 3 5 0
+0 4 8 4 0 0 0 6 6 0 0 0 3 8 5
+ 4 2 2 4 0 0 6 2 6 0 0 3 1 3 5
+4 6 4 6 4 0 6 8 8 6 0 3 4 4 8
+ 0 0 0 0 4 6 4 6 4 6 3 7 8 2 8
+0 0 0 0 4 0 0 0 0 0 9 0 5 0 0
+ 0 0 0 4 4 0 0 0 0 9 9 5 5 0 0
+0 0 0 4 8 4 0 0 0 9 8 4 0 5 0
+ 0 0 4 2 2 4 0 0 9 7 2 4 5 5 0
+0 0 4 6 4 6 4 0 9 6 9 6 9 0 5
+
+Sample Run #3:
+I can't put colors into the README file, but basically the colors are just the
+numbers modulus 10 (the size of the palette) and I have made a unique color
+for each number mod 10. For extra credit you must make a new palette from
+scratch, not using my own, and should mess with the size and coloration
+patterns to make something that looks cool. Submit screenshots of your colors
+to get extra credit.
