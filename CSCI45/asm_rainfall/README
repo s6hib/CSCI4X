@@ -1,0 +1,77 @@
+========================================================================
+    _    ____  __  __   ____      _    ___ _   _ _____ _    _     _     
+   / \  / ___||  \/  | |  _ \    / \  |_ _| \ | |  ___/ \  | |   | |    
+  / _ \ \___ \| |\/| | | |_) |  / _ \  | ||  \| | |_ / _ \ | |   | |    
+ / ___ \ ___) | |  | | |  _ <  / ___ \ | || |\  |  _/ ___ \| |___| |___ 
+/_/   \_\____/|_|  |_| |_| \_\/_/   \_\___|_| \_|_|/_/   \_\_____|_____|
+                                                                        
+========================================================================
+
+Purpose: This assignment will teach you about loading and storing to memory
+using a classic homework assignment in computer science: Rainfall. You'll
+learn about arrays and classes in ARM32.
+
+Overview: There is a rainfall sensor out in the jungle or something somewhere,
+and each day it reports how much rain it got that day. Input will be a series
+of signed 32 bit integers, passed to your program as a int *. To make it
+really old school, there is no size passed in - the end of the array will be
+marked by a -1. Don't read past that point, that's undefined behavior.
+There is at most one year's worth of data in an array.
+
+Days with 0 rain are called sunny days. Days with >= 1 inches of rain are
+called rainy days. Days with negative rainfall are errors and should be
+discarded without counting them in any calculations, this includes the -1 used
+to indicate the end of the array.
+
+Your ARM32 function will have the following signature in C++:
+extern "C" void asm_rainfall(int *arr, struct Retval *retval);
+
+extern "C" means 'turn off name mangling' - it allows C++ to talk with other
+languages, including ARM32.
+
+Retval is a struct, that you will write the results of your calculations into.
+It looks like this, with comments explaining what you need to write in:
+
+struct Retval {
+	int sunny_days; //You will write here how many days had 0 rain
+	int rainy_days; //How many days had >= 1 inch of rain
+	int total_days; //sunny_days + rainy_days basically
+	int avg_rainfall; //Average rainfall across all days
+	int avg_rain_on_rainy_days; //Average rainfall just on rainy days
+	int max_rainfall; //How much rain the rainiest day had
+};
+
+I am giving you a helper function with the signature 'int division(int x, int
+y)' that will return x / y (integer division) for you. That should help with
+the averages. It's just a wrapper for __aeabi_idiv if you want to call it
+directly with the same arguments.
+
+ARM32 help - 
+LDR R0, [R7,#40] (let's say R7 is a pointer or array - this will put arr[10] into R0)
+STR R0, [R8,#4] (let's say R8 is a pointer to retval, this will write the
+contents of R0 to the pointer + four bytes)
+LDR R1,=score   //int *ptr = &score, it gets the address of the label score in
+the data segment down below
+LDR R0,[R1]     //int temp = *ptr, R1 holds the pointer, R0 holds the value
+pointed to by that pointer
+ADD R0, R0, #2  //temp += 2 (change it in register)
+STR R0,[R1]     //*ptr = temp, store it back to RAM
+
+//This is how you make a data segment if you want to have variables in RAM,
+and not just registers - 
+.data
+score: .word 40     //int score = 40;
+.equ MAX_SIZE, 365 //const int MAX_SIZE = 365
+arr: .space 400 //400 bytes reserved (100 ints)
+.align  2 //Pad bytes in memory so the next variable is aligned to a 4-byte
+boundary. You can only LDR from bytes that are multiples of 4.
+print_string: .asciz "Arr[10] = %i\n" //asciz null terminates the string for
+you
+.align 2 //You can do this a lot sometimes
+
+Words on a 32 bit system are 32 bits (4 bytes) long. Generally speaking, every
+thing you load and store with LDR and STR must be on 4 byte boundaries. Hence
+we use the .align directive to make sure all the memory addresses are aligned
+to four byte boundaries. If you want to load one byte at a time instead of 4,
+you can use LDRB and STRB, and if you want to load 16 bits (2 bytes) at a time
+you can use LDRH and STRH.
