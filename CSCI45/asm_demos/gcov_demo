@@ -1,5 +1,0 @@
-1. Build:  g++ -fprofile-arcs -ftest-coverage -fprofile-values -fPIC -g main.cc
-2. Test: input_tester (or just run the program yourself a bunch of times)
-3. Generate a coverage report: gcov -r . main.cc
-4. Look at the profile information for your code: vim main.cc.gcov
-5. Nicer report, that can make html and xml reports, too: gcovr -r .
